@@ -1,0 +1,61 @@
+
+#ifndef RS_CLASSIFIER_HEADER
+#define RS_CLASSIFIER_HEADER
+
+
+#include <iostream>
+#include <string>
+#include <opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<ros/package.h>
+#include<boost/filesystem.hpp>
+#include <opencv2/ml/ml.hpp>
+
+
+
+class rs_classifier
+{
+public:
+
+  rs_classifier();
+  void getLabels(const std::string path,  std::map<std::string, double> &input_file);
+  void readDescriptorAndLabel(std::string matrix_name, std::string label_name, cv::Mat &des_matrix, cv::Mat &des_label);
+  std::string saveOrLoadTrained(std::string trained_file_name);
+  void evaluation(std::vector<int> test_label, std::vector<int> predicted_label);
+  ~ rs_classifier();
+};
+
+class rs_svm : public rs_classifier
+{
+
+public:
+
+    rs_svm();
+    void rs_svm_trained(std::string train_matrix_name, std::string train_label_name, std::string trained_file_name);
+    void rs_svmShowResult(std::string trained_file_name,std::string test_matrix_name, std::string test_label_name);
+    ~ rs_svm();
+};
+
+class rs_randomForest : public rs_classifier
+{
+
+public:
+
+    rs_randomForest();
+    void rs_randomForest_trained(std::string train_matrix_name, std::string train_label_name, std::string trained_file_name);
+    void rs_randomForestShowResult(std::string trained_file_name,std::string test_matrix_name, std::string test_label_name);
+    ~ rs_randomForest();
+};
+
+class rs_normalBayes : public rs_classifier
+{
+
+public:
+
+    rs_normalBayes();
+    void rs_normalBayes_trained(std::string train_matrix_name, std::string train_label_name, std::string trained_file_name);
+    void rs_normalBayesShowResult(std::string trained_file_name,std::string test_matrix_name, std::string test_label_name);
+    ~ rs_normalBayes();
+};
+
+#endif
