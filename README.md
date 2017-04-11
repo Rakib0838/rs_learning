@@ -1,6 +1,6 @@
 # rs_learning
 
-..................To extract the feature..................<br />
+..................To extract the feature..................
 - rosrun rs_learning featureExtractor -h  // show the help option
 - with -f enter the file name where all the object's names are listed.
 - with -s enter the object storage folder name (eg. partial_views)
