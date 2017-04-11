@@ -19,8 +19,8 @@ All the produced datas can be founded in rs_learning/data folder.
  
  ..........................To classify....................<br />
  If the classifier is already trained on need to call  the above function (trainModel). 
- The function (Classify) takes trained data (in folder rs_learning/data/trainedData ) ,
- Mat_test_ and it's labels (in folder rs_learning/data) as inputs
+ The function (Classify) takes trained data (in folder rs_learning/data/trainedData ),
+ Mat_test_, it's labels and classLabel (in folder rs_learning/data) as inputs
  and show the results of the classifications 
  
  please also check if all the required annotators are listed in my_demo (aggregate analysis engine)
