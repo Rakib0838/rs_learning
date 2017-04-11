@@ -5,10 +5,10 @@
 - with -f enter the file name where all the object's names are listed.
 - with -s enter the object storage folder name (eg. partial_views)
 - with -o select ALL ,which calculate all features.
-               OBJ ,which create train and test sets of the data , where 
-                    every third object of the sub-class consider as test data.
-               INS ,which create train and test sets of the dataset, there every forth (image or cloud)
-                    of the hole datasets considered as the element of the test dataset. 
+  OBJ ,which create train and test sets of the data , where 
+  every third object of the sub-class consider as test data.
+  INS ,which create train and test sets of the dataset, where every forth (image or cloud)
+  f the hole datasets considered as the element of the test dataset. 
 - with -r CNN or -r VFH feature can be selected.
 All the produced datas can be founded in rs_learning/data folder.
 
