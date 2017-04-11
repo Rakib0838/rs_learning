@@ -23,4 +23,4 @@ Call the function (trainModel), which takes train data from folder /rs_learning/
  Mat_test_ and it's labels (in folder rs_learning/data) as inputs
  and show the results of the classifications 
  
- # please also check if all the required annotators are listed in my_demo (aggregate analysis engine)
+ please also check if all the required annotators are listed in my_demo (aggregate analysis engine)
