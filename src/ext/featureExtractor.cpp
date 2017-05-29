@@ -30,6 +30,33 @@ using namespace std;
 
 namespace po = boost::program_options;
 
+/*
+
+void setLabels(std::string file_name, int line_num, std::vector<string> &my_annotation)
+{
+    std::string packagePath = ros::package::getPath("rs_learning");
+     std::string savePath = packagePath + "/data/";
+
+         // To check the resource path................................................
+     if(!boost::filesystem::exists(savePath))
+        {
+         std::cout<<"folder called data is not found to save the <<< classLabel in Double data >>>"<<std::endl;
+        }
+
+
+    std::ifstream file((savePath+file_name+".txt").c_str());
+
+  std::string str;
+ while(std::getline(file ,str))
+ {
+     my_annotation.push_back(str);
+ }
+
+}
+
+*/
+
+
 //To read the object label from rs_resource/object/datasets folder
 void readClassLabel( std::string obj_file_path, std::vector <std::pair < string, double> > &objectToLabel,
 std::vector<double> &classLabelInDouble)
@@ -77,6 +104,73 @@ std::vector<double> &classLabelInDouble)
       for(int i=0; i<objectToLabel.size(); i++){
           std::cout<< objectToLabel[i].first <<"::"<<objectToLabel[i].second<< std::endl;
       }
+
+      std::cout<<"classLabelInDouble:"<<std::endl;
+
+      for(int i=0; i< classLabelInDouble.size(); i++){
+          std::cout<<classLabelInDouble[i]<< std::endl;
+      }
+
+}
+
+//To read the .yml for Washington Uni........................................
+void read( std::string obj_file_path, std::vector <std::pair < string, double> > &objectToLabelTrain,
+           std::vector <std::pair < string, double> > &objectToLabelTest,
+std::vector<double> &classLabelInDouble)
+
+{
+    cv::FileStorage fs;
+    fs.open(obj_file_path, cv::FileStorage::READ);
+    std::vector<std::string> classes;
+
+    fs["classes"] >> classes;
+
+    if(classes.empty())
+    {
+      std::cout << "Object file has no classes defined" << std::endl;
+
+    }
+    else
+    {
+      for(int i=0; i<classes.size();i++)
+
+      {   double clslabel = clslabel+1;
+
+          classLabelInDouble.push_back(clslabel);
+
+           std::vector<std::string> subclasses;
+           fs[classes[i]] >> subclasses;
+
+        if(!subclasses.empty())
+          for(int j=0; j<subclasses.size(); j++)
+          {    if(j==0)
+              {
+                  objectToLabelTest.push_back(std::pair< std::string,float >(classes[i]+'/'+subclasses[j] , clslabel ));
+              }
+              else{
+              objectToLabelTrain.push_back(std::pair< std::string,float >(classes[i]+'/'+subclasses[j] , clslabel ));
+                }
+      }
+        else
+        {
+
+             std::cout<<"storage has no Subclass structure"<<std::endl;
+        }
+
+      }
+    }
+
+    fs.release();
+
+         std::cout<<"objectToLabelTest:"<<std::endl;
+      for(int i=0; i<objectToLabelTest.size(); i++){
+          std::cout<< objectToLabelTest[i].first <<"::"<<objectToLabelTest[i].second<< std::endl;
+      }
+
+      std::cout<<"objectToLabelTrain:"<<std::endl;
+   for(int i=0; i<objectToLabelTrain.size(); i++){
+       std::cout<< objectToLabelTrain[i].first <<"::"<<objectToLabelTrain[i].second<< std::endl;
+   }
 
       std::cout<<"classLabelInDouble:"<<std::endl;
 
@@ -241,6 +335,20 @@ void splitDataset(std::vector<std::pair<double, std::vector<float> > > features,
 
 }
 
+// To split the instance dataset into train and and test dataset..............................
+void descriptorsSplit( std::vector<std::pair<double, std::vector<float> > > features,
+                   std::vector<std::pair<double, std::vector<float> > > &output)
+{
+
+     // The following loop split every fourth desccriptor and store it to vector output_test
+    for(int i=0; i<features.size()/4;i++)
+    {
+      output.push_back(features[4*i]);
+        }
+
+
+}
+
 
 // To split the object's dataset into train and and test dataset..............................
 void SplitObjectLabel(std::vector <std::pair < string, double> > objToLab,
@@ -402,6 +510,26 @@ void saveClassLabels(std::vector<double> input_file, std::string split_name, std
    }
 }
 
+void saveObjectToLabels( std::vector <std::pair < string, double> > input_file, std::string split_name, std::string feat_name)
+{
+    std::string packagePath = ros::package::getPath("rs_learning");
+     std::string savePath = packagePath + "/data/";
+
+         // To check the resource path................................................
+     if(!boost::filesystem::exists(savePath))
+        {
+         std::cout<<"folder called data is not found to save the <<< classLabel in Double data >>>"<<std::endl;
+        }
+
+
+    std::ofstream file((savePath+"ClassLabel_"+split_name+'_'+feat_name+".txt").c_str());
+
+    for(auto p: input_file)
+   {
+       file<<p.first<<"::"<<p.second<<endl;
+   }
+}
+
 int main(int argc, char **argv)
 
 {
@@ -409,12 +537,12 @@ int main(int argc, char **argv)
     std::string objects_name,storage, feat, split;
     desc.add_options()
     ("help,h", "Print help messages")
-    ("file,f", po::value<std::string>(& objects_name)->default_value("ob_wu"),
+    ("file,f", po::value<std::string>(& objects_name)->default_value("obj_wu_10"),
      "enter the object file name")
     ("storage,s", po::value<std::string>(& storage)->default_value("png_wu"),
     "enter storage folder name")
-    ("split,o", po::value<std::string>(&split)->default_value("OBJ"),
-    "choose way to split: [OBJ|INS|ALL]")
+    ("split,o", po::value<std::string>(&split)->default_value("ONE"),
+    "choose way to split: [OBJ|INS|ALL|ONE]")
     ("feature,r", po::value<std::string>(&feat)->default_value("CNN"),
      "choose feature to extract: [CNN|VFH]");
 
@@ -449,16 +577,22 @@ int main(int argc, char **argv)
     std::vector <std::pair < string, double> > objectToLabel;
     std::vector<double> classLabelInDouble;
 
-    readClassLabel(object_file_path, objectToLabel, classLabelInDouble);
+   //  readClassLabel(object_file_path, objectToLabel, classLabelInDouble);
 
     //................................................................................................
 
-   //.................................................................................................
 
+   //.................................................................................................
+    std::vector <std::pair < string, double> > objectToLabel_train;
+    std::vector <std::pair < string, double> > objectToLabel_test;
 
         // split (objectToLabel) to create train an test dataset...........
-       std::vector <std::pair < string, double> > objectToLabel_train;
-       std::vector <std::pair < string, double> > objectToLabel_test;
+
+       //................................................................
+      read(object_file_path, objectToLabel_train ,objectToLabel_test,classLabelInDouble);
+       //................................................................
+
+
 
        // need to store .pcd  or .png file from storage
        std::map< double, std::vector<std::string> > model_files_all;
@@ -473,6 +607,19 @@ int main(int argc, char **argv)
        //To store splitted train and test descriptors
        std::vector<std::pair<double, std::vector<float> > > descriptors_all_train;
        std::vector<std::pair<double, std::vector<float> > > descriptors_all_test;
+
+       //To store splitted train and test descriptors
+       std::vector<std::pair<double, std::vector<float> > > descriptors_train_split;
+       std::vector<std::pair<double, std::vector<float> > > descriptors_test_split;
+
+
+     /*   std::vector<std::string>num;
+       setLabels("ClassLabel_INS_CNN",3, num);
+          std::cout<<num[6];
+       for(auto &p : num){
+
+       std::cout<<"value o num:"<<p<<std::endl;
+     }  */
 
 
 
@@ -495,7 +642,8 @@ int main(int argc, char **argv)
                       saveDatasets (descriptors_all_train, descriptors_all_test, split, feat);
 
                       // To save the class labels in type double in folder /rs_learning
-                      saveClassLabels(classLabelInDouble, split, feat);
+                    //  saveClassLabels(classLabelInDouble, split, feat);
+                      saveObjectToLabels(objectToLabel, split, feat);
                    }
 
             else if(split == "INS" && feat == "CNN")
@@ -518,6 +666,7 @@ int main(int argc, char **argv)
 
                     // To save the class labels in type double in folder rs_learning/data
                      saveClassLabels(classLabelInDouble, split, feat);
+                    //  saveObjectToLabels(objectToLabel, split, feat);
                    }
      
           else if(split == "OBJ" && feat == "VFH")
@@ -544,7 +693,8 @@ int main(int argc, char **argv)
                    saveDatasets (descriptors_train, descriptors_test, split, feat);
 
                    // To save the class labels in type double in folder /rs_learning/data
-                    saveClassLabels(classLabelInDouble, split, feat);
+                   //  saveClassLabels(classLabelInDouble, split, feat);
+                   saveObjectToLabels(objectToLabel, split, feat);
                 }
 
           else if(split == "OBJ" && feat == "CNN")
@@ -571,9 +721,41 @@ int main(int argc, char **argv)
                     saveDatasets (descriptors_train, descriptors_test, split, feat);
 
                     // To save the class labels in type double in folder /rs_learning/data
-                    saveClassLabels(classLabelInDouble, split, feat);
+                   // saveClassLabels(classLabelInDouble, split, feat);
+                    saveObjectToLabels(objectToLabel, split, feat);
                 }
+   //.......................................................................................................................
+            else if(split == "ONE" && feat == "CNN")
+                  {
+                      std::cout<<"Starts calculation with object(ONE) and CNN :"<<std::endl;
 
+                      // Split the object labels to create the train and test data, where every third object of the sub-class
+                       //consider as the test data. which is created to  work with washington university's datasets
+
+
+                      // To read .png files from the storage folder...........
+                      getFiles(model_files_path, objectToLabel_train, model_files_train, "_crop.png");
+
+                      // To read .png files from the storage folder...........
+                      getFiles(model_files_path, objectToLabel_test, model_files_test, "_crop.png");
+
+                      // To calculate CNN features..................................
+                      extractCNNFeature(model_files_train, resourcePath, descriptors_train);
+
+                      // To calculate CNN features..................................
+                      extractCNNFeature(model_files_test, resourcePath, descriptors_test);
+
+                         descriptorsSplit(descriptors_train,descriptors_train_split);
+
+                          descriptorsSplit(descriptors_test,descriptors_test_split);
+                       // To calculate CNN features..................................
+                      saveDatasets (descriptors_train_split, descriptors_test_split, split, feat);
+
+                      // To save the class labels in type double in folder /rs_learning/data
+                      saveClassLabels(classLabelInDouble, split, feat);
+                    //  saveObjectToLabels(objectToLabel, split, feat);
+                  }
+   //........................................................................................................................
 
           else if(split == "ALL" && feat == "VFH")
                    {
@@ -589,7 +771,8 @@ int main(int argc, char **argv)
                          saveAallDescriptors (descriptors_all, split, feat );
 
                       // To save the class labels in type double in folder /rs_learning
-                      saveClassLabels(classLabelInDouble, split, feat);
+                    //  saveClassLabels(classLabelInDouble, split, feat);
+                      saveObjectToLabels(objectToLabel, split, feat);
                    }
 
 
@@ -607,10 +790,13 @@ int main(int argc, char **argv)
                saveAallDescriptors (descriptors_all, split, feat );
 
               // To save the class labels in type double in folder rs_learning/data
-               saveClassLabels(classLabelInDouble, split, feat);
+            //   saveClassLabels(classLabelInDouble, split, feat);
+               saveObjectToLabels(objectToLabel, split, feat);
              }
 
-     std::cout<<"Descriptors calculation is done"<<std::endl;
+
+
+       std::cout<<"Descriptors calculation is done"<<std::endl;
 
 
     return 0;

@@ -2,33 +2,29 @@
 <taeDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.cpp</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>rs_rSRFAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>rs_rSGBAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>RSRFAnnotator</name>
+    <name>RSGBAnnotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
-
         <configurationParameter>
-            <name>test_param_rf</name>
-            <type>string</type>
+            <name>test_param</name>
+            <type>Float</type>
             <multiValued>false</multiValued>
             <mandatory>false</mandatory>
         </configurationParameter>
     </configurationParameters>
-
- <!--select the parameter between shape & instant -->
- <configurationParameterSettings>
+    <configurationParameterSettings>
         <nameValuePair>
-            <name>test_param_rf</name>
+            <name>test_param</name>
             <value>
-                <string>instant</string>
+                <float>0.01</float>
             </value>
         </nameValuePair>
-  </configurationParameterSettings>
-
-     <typeSystemDescription>
+    </configurationParameterSettings>
+    <typeSystemDescription>
         <imports>
             <import location="../typesystem/all_types.xml"/>
         </imports>

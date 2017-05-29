@@ -88,6 +88,9 @@
     <delegateAnalysisEngine key="PrimitiveShapeAnnotator">
       <import location="../../../robosherlock/descriptors/annotators/annotation/PrimitiveShapeAnnotator.xml"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RSGBAnnotator">
+      <import location="../annotators/RSGBAnnotator.xml"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RSRFAnnotator">
       <import location="../annotators/RSRFAnnotator.xml"/>
     </delegateAnalysisEngine>
@@ -133,6 +136,48 @@
           <parameter>CollectionReader/camera_config_files</parameter>
         </overrides>
       </configurationParameter>
+
+<configurationParameter>
+  <name>descriptorType</name>
+  <type>String</type>
+  <multiValued>false</multiValued>
+  <mandatory>true</mandatory>
+  <overrides>
+  <parameter>PCLDescriptorExtractor/descriptorType</parameter>
+</overrides>
+</configurationParameter>
+
+<configurationParameter>
+  <name>segmMode</name>
+  <description>switch between Inverse binary and binary thresholding</description>
+  <type>String</type>
+  <multiValued>false</multiValued>
+  <mandatory>false</mandatory>
+  <overrides>
+  <parameter>ImageSegmentationAnnotator/segmMode</parameter>
+  </overrides>
+</configurationParameter>
+
+    <configurationParameter>
+       <name>minSize</name>
+       <type>Integer</type>
+       <multiValued>false</multiValued>
+       <mandatory>false</mandatory>
+       <overrides>
+         <parameter>ImageSegmentationAnnotator/minSize</parameter>
+       </overrides>
+     </configurationParameter>
+
+     <configurationParameter>
+        <name>hsvFilter</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+        <parameter>ImageSegmentationAnnotator/hsvFilter</parameter>
+        </overrides>
+    </configurationParameter>
+
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -143,15 +188,54 @@
           </array>
         </value>
       </nameValuePair>
+
+      <nameValuePair>
+        <name>descriptorType</name>
+        <value>
+        <!--    <string>OUR-CVFH</string>  default one -->
+          <string>VFH</string>
+        </value>
+      </nameValuePair>
+
+      <nameValuePair>
+        <name>segmMode</name>
+        <value>
+        <string>INVBINARY</string>
+        </value>
+        </nameValuePair>
+
+      <nameValuePair>
+        <name>hsvFilter</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+
+      <nameValuePair>
+        <name>minSize</name>
+        <value>
+            <integer>1200</integer>
+        </value>
+      </nameValuePair>
+
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
       <node>CollectionReader</node>
       <node>ImagePreprocessor</node>
-    <!--  <node>PointClusterExtractor</node> -->
-     <node>RSRFAnnotator</node>
-      <node>RSSvmAnnotator</node>
-      <node>ResultAdvertiser</node>
+      <node>RegionFilter</node>
+      <node>NormalEstimator</node>
+      <node>PlaneAnnotator</node>
+      <node>ImageSegmentationAnnotator</node>
+      <node>PointCloudClusterExtractor</node>
+      <node>ClusterMerger</node>
+      <node>PCLDescriptorExtractor</node>
+      <node>CaffeAnnotator</node>
+
+    <node>RSRFAnnotator</node>
+   <node>RSSvmAnnotator</node>
+   <!--    <node>RSGBAnnotator</node>   -->
+<!--      <node>ResultAdvertiser</node>-->
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

@@ -107,7 +107,8 @@ RSSVM::RSSVM()
             int actual_convert= lab;
             actual_label.push_back(actual_convert);
 
-         //  std::cout<<"actuall class is:"<<actual_convert<<"::"<<"prediction is :"<< prediction<<std::endl;
+          std::cout<<"actuall class is:"<<actual_convert<<"::"<<"prediction is :"<< prediction<<std::endl;
+         //   std::cout<<"prediction class is::"<<prediction <<std::endl;
           }
 
 
@@ -116,6 +117,62 @@ RSSVM::RSSVM()
    evaluation(actual_label, predicted_label, obj_classInDouble );
 
 }
+
+
+ // To predict the class using SVM................................
+
+  void RSSVM:: classify_own_svm (std::string trained_file_name_saved, cv::Mat test_mat, double &clsLab)
+ {
+      std::cout<<"size of test matrix :"<<test_mat.size()<<std::endl;
+
+     CvSVM* your_svm=new CvSVM ;
+
+     // To load the trained data..............................
+     your_svm->load((saveOrLoadTrained(trained_file_name_saved)).c_str());
+
+     // To count the support vector................................
+   //    int in= your_svm->get_support_vector_count();
+   //   std::cout<<"The number of support vector:"<<in<<std::endl;
+
+
+
+
+             double res = your_svm->predict(test_mat);
+
+             std::cout<<"prediction class is::"<<res<<std::endl;
+                       clsLab =res;
+
+
+
+ }
+
+  void RSSVM::classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_mat, double &det)
+   {
+
+      // To load the test data and it's label.............................
+
+     std::cout<<"size of test matrix :"<<test_mat.size()<<std::endl;
+
+
+       CvSVM* your_svm=new CvSVM ;
+
+       // To load the trained data..............................
+       your_svm->load((saveOrLoadTrained(trained_file_name_saved)).c_str());
+
+       // To count the support vector................................
+         int in= your_svm->get_support_vector_count();
+        std::cout<<"The number of support vector:"<<in<<std::endl;
+
+
+       //Loop to prdict the rsult............................
+
+               double res = your_svm->predict(test_mat);
+               det =res;
+
+               std::cout<<"prediction class is :"<< res<<std::endl;
+
+   }
+
 
  RSSVM::~RSSVM()
  {

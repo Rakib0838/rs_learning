@@ -9,22 +9,27 @@
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
-        <configurationParameter>
-            <name>test_param</name>
-            <type>Float</type>
-            <multiValued>false</multiValued>
-            <mandatory>false</mandatory>
-        </configurationParameter>
-    </configurationParameters>
-    <configurationParameterSettings>
-        <nameValuePair>
-            <name>test_param</name>
-            <value>
-                <float>0.01</float>
-            </value>
-        </nameValuePair>
-    </configurationParameterSettings>
-    <typeSystemDescription>
+
+<configurationParameter>
+    <name>test_param_svm</name>
+    <type>string</type>
+    <multiValued>false</multiValued>
+    <mandatory>false</mandatory>
+</configurationParameter>
+</configurationParameters>
+
+<!--select the parameter between shape & instant -->
+<configurationParameterSettings>
+<nameValuePair>
+    <name>test_param_svm</name>
+    <value>
+        <string>shape</string>
+    </value>
+  </nameValuePair>
+</configurationParameterSettings>
+
+
+  <typeSystemDescription>
         <imports>
             <import location="../typesystem/all_types.xml"/>
         </imports>

@@ -22,6 +22,8 @@ public:
 
     void classify(std::string trained_file_name,std::string test_matrix_name, std::string test_label_name,std::string obj_classInDouble);
 
+    void classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_mat, double &det);
+
     ~ RSRF();
 };
 

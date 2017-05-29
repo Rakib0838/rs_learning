@@ -1,6 +1,6 @@
 
-#ifndef RSSVM_HEADER
-#define RSSVM_HEADER
+#ifndef RSGBT_HEADER
+#define RSGBT_HEADER
 
 
 #include <iostream>
@@ -13,18 +13,16 @@
 #include <rs_learning/RSClassifier.h>
 
 
-class RSSVM : public RSClassifier, public CvSVM
+class RSGBT : public RSClassifier
 {
 
 public:
 
-    RSSVM();
+    RSGBT();
     void trainModel(std::string train_matrix_name, std::string train_label_name, std::string trained_file_name);
     void classify(std::string trained_file_name,std::string test_matrix_name, std::string test_label_name, std::string obj_classInDouble);
-    void classify_own_svm (std::string trained_file_name_saved, cv::Mat test_mat , double &clsLab);
-
     void classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_mat, double &det);
-    ~ RSSVM();
+    ~ RSGBT();
 };
 
 #endif

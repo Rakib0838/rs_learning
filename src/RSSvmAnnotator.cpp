@@ -15,37 +15,64 @@
 #include <rs_learning/RSClassifier.h>
 #include <rs_learning/RSSVM.h>
 
+#include <pcl/visualization/cloud_viewer.h>
+#include <rs/DrawingAnnotator.h>
+
+
 using namespace uima;
 
 
-class RSSvmAnnotator : public Annotator
+class RSSvmAnnotator :  public DrawingAnnotator
 {
 private:
-  float test_param;
+
+       std::string test_param_svm;
+
+        cv::Mat color;
+        std::vector<std::string> model_labels;
 
 public:
+  RSSVM svmInstance;
+  RSClassifier* svmObject= &svmInstance;
 
+  RSSvmAnnotator(): DrawingAnnotator(__func__)
+  {
 
-
-  RSSVM rakib;
-  RSClassifier* po= &rakib;
-
+  }
 
   TyErrorId initialize(AnnotatorContext &ctx)
   {
     outInfo("initialize");
 
+     ctx.extractValue("test_param_svm", test_param_svm);
 
-  /* To train the classifier, call the function (trainModel), which takes train data from folder /rs_learning/data.
+   // read the class label from folder rs_learning/data....................................
+
+    // To call the object class label
+     if(test_param_svm =="instant")
+     {
+         svmObject->setLabels("class_label", model_labels);
+      }
+    else if(test_param_svm =="shape")
+      {
+    //To call the shape class label.
+         svmObject->setLabels("class_label_shape", model_labels);
+      }
+
+
+     /* To train the classifier, call the function (trainModel), which takes train data from folder /rs_learning/data.
    The function takes Mat_train_ , label_train_ as parameters and produces a trained mat file as the name given as it's
    third parameter in folder rs_learning/data/trainedData */
-//  po->trainModel("Mat_train_OBJ_CNN" ,"label_train_OBJ_CNN","trained_saved_SVM_OBJ_CNN");
 
- /* If the classifier is already trained on need to call  the above function (trainModel). The function (Classify) takes
+   //  svmObject->trainModel("Mat_train_ONE_CNN" , "label_train_ONE_CNN", "trained_SVM_ONE_CNN_WU");;
+
+  /* If the classifier is already trained on need to call  the above function (trainModel). The function (Classify) takes
    trained data (in folder rs_learning/data/trainedData ) , Mat_test_ and it's labels (in folder rs_learning/data) as inputs
    and show the results of the classifications */
- po->classify("trained_saved_SVM_OBJ_CNN" ,"Mat_test_OBJ_CNN" ,"label_test_OBJ_CNN","ClassLabel_OBJ_CNN");
-    ctx.extractValue("test_param", test_param);
+
+    // svmObject->classify("trained_SVM_ONE_CNN_WU" ,"Mat_test_ONE_CNN" ,"label_test_ONE_CNN","ClassLabel_ONE_CNN");
+
+
     return UIMA_ERR_NONE;
 }
   TyErrorId destroy()
@@ -54,30 +81,45 @@ public:
     return UIMA_ERR_NONE;
   }
 
-  TyErrorId process(CAS &tcas, ResultSpecification const &res_spec)
+  TyErrorId processWithLock(CAS &tcas, ResultSpecification const &res_spec)
   {
 
-     // To work here first declare the object of the class.
-      //To predict the classifier result call the function  (classify),
-      //which takes trained file, test data and it's label file name as input parameters.
+
+      rs::SceneCas cas(tcas);
+      rs::Scene scene = cas.getScene();
+
+      cas.get(VIEW_COLOR_IMAGE_HD, color);
+      std::vector<rs::Cluster> clusters;
+      scene.identifiables.filter(clusters);
 
 
 
- //   po->trainModel("Mat_train_VFH" ,"label_train_VFH","trained_saved_SVM_VFH");
-     // po->trainModel("VFH_descriptors_train" ,"VFH_descriptors_train_label","trained_saved_SVM_VFH");
+        if(test_param_svm =="instant")
+        {
+            // To work with caffe feature...............
+            svmObject->processCaffeFeature("trained_SVM_ALL_CNN_OUR",clusters, svmObject, color, model_labels);
+         }
+       else if(test_param_svm =="shape")
+         {
+            //To work with VFH feature.....................
+            svmObject->processVFHFeature("trained_SVM_ALL_VFH_OUR", clusters, svmObject, color,model_labels);
 
- /*  
- outInfo("process start");
-    rs::StopWatch clock;
-    rs::SceneCas cas(tcas);
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGBA>);
-    outInfo("Test param =  " << test_param);
-    cas.get(VIEW_CLOUD,*cloud_ptr);
+         }
 
-    outInfo("Cloud size: " << cloud_ptr->points.size());
-    outInfo("took: " << clock.getTime() << " ms.");   */
+
+
+        outInfo("calculation is done"<<std::endl);
+
     return UIMA_ERR_NONE;
   }
+
+
+  void drawImageWithLock(cv::Mat &disp)
+  {
+    disp = color.clone();
+  }
+
+
 };
 
 // This macro exports an entry point that is used to create the annotator.

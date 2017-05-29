@@ -73,6 +73,15 @@ target_link_libraries(rs_rSRFAnnotator ${CATKIN_LIBRARIES}
                                         ${Boost_LIBRARIES}
                                         ${PCL_LIBRARIES})
 
+rs_add_library(rs_rSGBAnnotator src/RSGBAnnotator.cpp
+                               src/RSClassifier.cpp 
+                               src/RSGBT.cpp)
+
+target_link_libraries(rs_rSGBAnnotator ${CATKIN_LIBRARIES}
+                                       ${OpenCV_LIBRARIES}
+                                        ${Boost_LIBRARIES}
+                                        ${PCL_LIBRARIES})
+
 
 
 add_executable(featureExtractor src/ext/featureExtractor.cpp)

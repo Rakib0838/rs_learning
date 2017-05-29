@@ -14,38 +14,65 @@
 
 #include <rs_learning/RSClassifier.h>
 #include <rs_learning/RSRF.h>
+
+#include <rs/DrawingAnnotator.h>
 using namespace uima;
 
-class RSRFAnnotator : public Annotator
+class RSRFAnnotator : public DrawingAnnotator
 {
 private:
-  float test_param;
+
+  std::string test_param_rf;
+  cv::Mat color;
+   std::vector<std::string> model_labels;
 
 public:
 
-  RSRF tui;
-  RSClassifier* pon= &tui;
+  RSRFAnnotator(): DrawingAnnotator(__func__){
+
+ }
+
+  RSRF rsrfInstance;
+  RSClassifier* rfObject= &rsrfInstance;
 
 
   TyErrorId initialize(AnnotatorContext &ctx)
   {
     outInfo("initialize");
 
+    ctx.extractValue("test_param_rf", test_param_rf);
+
+  // read the class label from folder rs_learning/data....................................
+
+   // To call the object class label
+    if(test_param_rf =="instant")
+    {
+        rfObject->setLabels("class_label", model_labels);
+     }
+   else if(test_param_rf =="shape")
+     {
+   //To call the shape class label.
+   rfObject->setLabels("class_label_shape", model_labels);
+     }
+
+
     /* To train the classifier, call the function (trainModel), which takes train data from folder /rs_learning/data.
      The function takes Mat_train_ , label_train_ as parameters and produces a trained mat file as the name given as it's
      third parameter in folder rs_learning/data/trainedData */
 
-   // pon->trainModel("Mat_train_OBJ_CNN" ,"label_train_OBJ_CNN","trained_saved_RF_OBJ_CNN");
+      //  rfObject->trainModel("Mat_train_ONE_CNN" , "label_train_ONE_CNN", "trained_RF_ONE_CNN_WU");
 
     /* If the classifier is already trained on need to call  the above function (trainModel). The function (Classify) takes
       trained data (in folder rs_learning/data/trainedData ) , Mat_test_ and it's labels (in folder rs_learning/data) as inputs
       and show the results of the classifications */
 
-   pon->classify("trained_saved_RF_OBJ_CNN" ,"Mat_test_OBJ_CNN" ,"label_test_OBJ_CNN","ClassLabel_OBJ_CNN");
+     // rfObject->classify("trained_RF_ONE_CNN_WU" ,"Mat_test_ONE_CNN" ,"label_test_ONE_CNN","ClassLabel_ONE_CNN");
 
-    ctx.extractValue("test_param", test_param);
+
     return UIMA_ERR_NONE;
   }
+
+
 
   TyErrorId destroy()
   {
@@ -53,25 +80,43 @@ public:
     return UIMA_ERR_NONE;
   }
 
-  TyErrorId process(CAS &tcas, ResultSpecification const &res_spec)
+
+
+  TyErrorId processWithLock(CAS &tcas, ResultSpecification const &res_spec)
   {
 
+      rs::SceneCas cas(tcas);
+      rs::Scene scene = cas.getScene();
+
+      cas.get(VIEW_COLOR_IMAGE_HD, color);
+      std::vector<rs::Cluster> clusters;
+      scene.identifiables.filter(clusters);
+
+      if(test_param_rf == "instant")
+      {
+          // To work with caffe feature...............
+          rfObject->processCaffeFeature("trained_RF_ALL_CNN_OUR",clusters, rfObject, color, model_labels);
+       }
+     else if(test_param_rf == "shape")
+       {
+          //To work with VFH feature.....................
+          rfObject->processVFHFeature("trained_RF_ALL_VFH_OUR", clusters, rfObject, color, model_labels);
+
+       }
 
 
+     return UIMA_ERR_NONE;
 
-   
- /*
-    outInfo("process start");
-    rs::StopWatch clock;
-    rs::SceneCas cas(tcas);
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_ptr(new pcl::PointCloud<pcl::PointXYZRGBA>);
-    outInfo("Test param =  " << test_param);
-    cas.get(VIEW_CLOUD,*cloud_ptr);
-
-    outInfo("Cloud size: " << cloud_ptr->points.size());
-    outInfo("took: " << clock.getTime() << " ms.");   */
-    return UIMA_ERR_NONE;
   }
+
+
+
+  void drawImageWithLock(cv::Mat &disp)
+  {
+    disp = color.clone();
+  }
+
+
 };
 
 // This macro exports an entry point that is used to create the annotator.
