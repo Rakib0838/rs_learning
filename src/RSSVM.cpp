@@ -174,6 +174,19 @@ RSSVM::RSSVM()
    }
 
 
+
+
+  void RSSVM::RsAnnotation (uima::CAS &tcas,std::string class_name, rs::Cluster &cluster)
+  {
+      //To annotate the clusters..................
+           rs::Classification classResult= rs::create<rs::Classification>(tcas);
+           classResult.classname.set(class_name);
+           classResult.source("Support Vector Machine");
+           cluster.annotations.append(classResult);
+  }
+
+
+
  RSSVM::~RSSVM()
  {
 

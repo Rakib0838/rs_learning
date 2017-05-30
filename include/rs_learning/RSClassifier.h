@@ -12,6 +12,13 @@
 #include <opencv2/ml/ml.hpp>
 #include <rs/types/all_types.h>
 
+#include <uima/api.hpp>
+#include <rs/scene_cas.h>
+//RS
+#include <rs/types/all_types.h>
+#include <rs/scene_cas.h>
+#include <rs/utils/time.h>
+#include <rs/DrawingAnnotator.h>
 using namespace rs;
 
 
@@ -32,6 +39,8 @@ public:
  
   virtual void classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_mat, double &det)=0;
 
+  virtual void RsAnnotation (uima::CAS &tcas,std::string class_name, rs::Cluster &cluster)=0;
+
  void getLabels(const std::string path,  std::map<std::string, double> &input_file);
  
  void readDescriptorAndLabel(std::string matrix_name, std::string label_name, cv::Mat &des_matrix, cv::Mat &des_label);
@@ -43,9 +52,9 @@ void evaluation(std::vector<int> test_label, std::vector<int> predicted_label,st
 void drawCluster(cv::Mat input , cv::Rect rect, const std::string &label);
 
 //void  processPclFeature(std::string memory_name, std::vector<Cluster> clusters, RSClassifier* po , cv::Mat &color  );
-void  processVFHFeature(std::string memory_name, std::vector<Cluster> clusters, RSClassifier* po , cv::Mat &color, std::vector<std::string> models_label );
+void  processVFHFeature(std::string memory_name, std::vector<Cluster> clusters, RSClassifier* obj_VFH , cv::Mat &color, std::vector<std::string> models_label , uima::CAS &tcas);
 
-void  processCaffeFeature(std::string memory_name, std::vector<Cluster> clusters, RSClassifier* obj , cv::Mat &color, std::vector<std::string> models_label);
+void  processCaffeFeature(std::string memory_name, std::vector<Cluster> clusters, RSClassifier* obj_caffe , cv::Mat &color, std::vector<std::string> models_label,uima::CAS &tcas );
 
 void setLabels(std::string file_name, std::vector<std::string> &my_annotation);
 

@@ -32,8 +32,7 @@ public:
 
  }
 
-  RSRF rsrfInstance;
-  RSClassifier* rfObject= &rsrfInstance;
+  RSClassifier* rfObject= new RSRF;
 
 
   TyErrorId initialize(AnnotatorContext &ctx)
@@ -95,12 +94,12 @@ public:
       if(test_param_rf == "instant")
       {
           // To work with caffe feature...............
-          rfObject->processCaffeFeature("trained_RF_ALL_CNN_OUR",clusters, rfObject, color, model_labels);
+          rfObject->processCaffeFeature("trained_RF_ALL_CNN_OUR",clusters, rfObject, color, model_labels, tcas);
        }
      else if(test_param_rf == "shape")
        {
           //To work with VFH feature.....................
-          rfObject->processVFHFeature("trained_RF_ALL_VFH_OUR", clusters, rfObject, color, model_labels);
+          rfObject->processVFHFeature("trained_RF_ALL_VFH_OUR", clusters, rfObject, color, model_labels, tcas);
 
        }
 

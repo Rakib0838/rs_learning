@@ -1,3 +1,6 @@
+
+/*
+
 #include<iostream>
 #include <vector>
 #include <fstream>
@@ -131,3 +134,4 @@ void RSGBT::classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test
 
  }
 
+*/

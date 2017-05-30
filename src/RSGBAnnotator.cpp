@@ -1,3 +1,6 @@
+
+/*
+
 #include <uima/api.hpp>
 
 #include <pcl/point_types.h>
@@ -18,7 +21,7 @@ private:
   float test_param;
 
 public:
-    
+   // Incomplete work...........Gradient boost trees....
       RSGBT rakiba;
        RSGBT* objGBT= &rakiba;
 
@@ -63,3 +66,5 @@ public:
 
 // This macro exports an entry point that is used to create the annotator.
 MAKE_AE(RSGBAnnotator)
+
+*/

@@ -199,7 +199,7 @@ void  RSClassifier::processPclFeature(std::string memory_name, std::vector<rs::C
 
 */
 
-void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::Cluster> clusters, RSClassifier *po, cv::Mat &color,std::vector<std::string> models_label)
+void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::Cluster> clusters, RSClassifier *obj_VFH, cv::Mat &color,std::vector<std::string> models_label, uima::CAS &tcas)
 {
 
 
@@ -229,11 +229,15 @@ void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::C
       outInfo("number of elements in :" << i << std::endl);
 
       double classLabel;
-      po->classifyOnLiveData(memory_name, test_mat, classLabel);
+      obj_VFH->classifyOnLiveData(memory_name, test_mat, classLabel);
 
       int classLabelInInt = classLabel;
      // std::string sr = "cluster_" + std::to_string(i) + '_' + std::to_string(classLabelInInt);
-        std::string sr = models_label[classLabelInInt-1];
+      std::string classLabelInString = models_label[classLabelInInt-1];
+
+ //To annotate the clusters..................
+
+       RsAnnotation (tcas,classLabelInString, cluster);
 
       //set roi on image
       rs::ImageROI image_roi = cluster.rois.get();
@@ -242,7 +246,7 @@ void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::C
 
 
       //Draw result on image...........
-      po->drawCluster(color, rect, sr);
+      obj_VFH->drawCluster(color, rect, classLabelInString);
 
       outInfo("calculation is done" << std::endl);
     }
@@ -256,7 +260,7 @@ void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::C
 //the function process and classify RGB images, which run from a .bag file.
 void  RSClassifier::processCaffeFeature(std::string memory_name,
                                       std::vector<rs::Cluster> clusters,
-                                      RSClassifier *obj, cv::Mat &color, std::vector<std::string> models_label)
+                                      RSClassifier *obj_caffe, cv::Mat &color, std::vector<std::string> models_label, uima::CAS &tcas)
 {
 
   // clusters comming from RS pipeline............................
@@ -290,19 +294,24 @@ void  RSClassifier::processCaffeFeature(std::string memory_name,
 
 
        //The function generate the prediction result................
-         obj->classifyOnLiveData(memory_name, featDescriptor, classLabel);
+         obj_caffe->classifyOnLiveData(memory_name, featDescriptor, classLabel);
 
          //class label in integer, which is used as index of vector model_label.
           int classLabelInInt = classLabel;
           std::string classLabelInString = models_label[classLabelInInt-1];
 
-       //set roi on image
+     //To annotate the clusters..................
+
+           RsAnnotation (tcas,classLabelInString, cluster);
+
+
+          //set roi on image
           rs::ImageROI image_roi = cluster.rois.get();
           cv::Rect rect;
           rs::conversion::from(image_roi.roi_hires.get(), rect);
 
       //Draw result on image...........................
-         obj->drawCluster(color, rect, classLabelInString);
+         obj_caffe->drawCluster(color, rect, classLabelInString);
 
       }
       outInfo("calculation is done" << std::endl);

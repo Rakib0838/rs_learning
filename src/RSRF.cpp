@@ -124,6 +124,15 @@ void RSRF::classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_
 
 }
 
+void RSRF::RsAnnotation (uima::CAS &tcas,std::string class_name, rs::Cluster &cluster)
+{
+    //To annotate the clusters..................
+         rs::Classification classResult= rs::create<rs::Classification>(tcas);
+         classResult.classname.set(class_name);
+         classResult.source("Random Forest");
+         cluster.annotations.append(classResult);
+}
+
 RSRF::~ RSRF()
 {
 

@@ -32,8 +32,8 @@ private:
         std::vector<std::string> model_labels;
 
 public:
-  RSSVM svmInstance;
-  RSClassifier* svmObject= &svmInstance;
+
+  RSClassifier* svmObject= new RSSVM;
 
   RSSvmAnnotator(): DrawingAnnotator(__func__)
   {
@@ -97,12 +97,12 @@ public:
         if(test_param_svm =="instant")
         {
             // To work with caffe feature...............
-            svmObject->processCaffeFeature("trained_SVM_ALL_CNN_OUR",clusters, svmObject, color, model_labels);
+            svmObject->processCaffeFeature("trained_SVM_ALL_CNN_OUR",clusters, svmObject, color, model_labels, tcas);
          }
        else if(test_param_svm =="shape")
          {
             //To work with VFH feature.....................
-            svmObject->processVFHFeature("trained_SVM_ALL_VFH_OUR", clusters, svmObject, color,model_labels);
+            svmObject->processVFHFeature("trained_SVM_ALL_VFH_OUR", clusters, svmObject, color,model_labels, tcas);
 
          }
 
