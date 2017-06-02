@@ -178,13 +178,27 @@
         </overrides>
     </configurationParameter>
 
+  <!-- add line to write in mongo -->
+<configurationParameter>
+  <name>storagedb</name>
+  <type>String</type>
+  <multiValued>false</multiValued>
+  <mandatory>false</mandatory>
+  <overrides>
+    <parameter>StorageWriter/storagedb</parameter>
+  </overrides>
+</configurationParameter>
+
+<!--end--> 
+
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
         <name>camera_config_files</name>
         <value>
           <array>
-            <string>config_kinect_robot.ini</string>
+          <!--  <string>config_kinect_robot.ini</string>  -->
+            <string>config_mongodb_playback.ini</string>
           </array>
         </value>
       </nameValuePair>
@@ -218,6 +232,18 @@
         </value>
       </nameValuePair>
 
+
+<!-- parameter settig to write in mongo -->
+<!--
+<nameValuePair>
+  <name>storagedb</name>
+  <value>
+    <string>Breakfast2_annotated</string>
+  </value>
+</nameValuePair>
+-->
+
+
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
@@ -233,9 +259,12 @@
       <node>CaffeAnnotator</node>
 
     <node>RSRFAnnotator</node>
-   <node>RSSvmAnnotator</node>
+  <node>RSSvmAnnotator</node>  
    <!--    <node>RSGBAnnotator</node>   -->
-<!--      <node>ResultAdvertiser</node>-->
+   <node>StorageWriter</node>
+
+<!--  <node>ResultAdvertiser</node>  -->
+
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
