@@ -32,7 +32,8 @@ public:
 
     void classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_mat, double &det);
 
-    void RsAnnotation (uima::CAS &tcas,std::string class_name, rs::Cluster &cluster);
+    void RsAnnotation (uima::CAS &tcas, std::string class_name, std::string feature_name, std::string database_name, rs::Cluster &cluster, std::string set_mode);
+
 
     ~ RSSVM();
 };

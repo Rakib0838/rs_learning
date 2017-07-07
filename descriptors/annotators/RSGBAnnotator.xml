@@ -9,20 +9,56 @@
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
-        <configurationParameter>
-            <name>test_param</name>
-            <type>Float</type>
-            <multiValued>false</multiValued>
-            <mandatory>false</mandatory>
-        </configurationParameter>
-    </configurationParameters>
+
+<!--which should be CL (classify) or GT (groundTruth)  -->
+    <configurationParameter>
+        <name>set_mode</name>
+        <type>string</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+
+    <configurationParameter>
+        <name>trained_model_name</name>
+        <type>string</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+
+    <configurationParameter>
+        <name>actual_class_label</name>
+        <type>string</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+    </configurationParameter>
+
+</configurationParameters>
     <configurationParameterSettings>
-        <nameValuePair>
-            <name>test_param</name>
-            <value>
-                <float>0.01</float>
-            </value>
-        </nameValuePair>
+
+<!--which should be CL (classify) or GT (groundTruth)  -->
+<nameValuePair>
+    <name>set_mode</name>
+    <value>
+        <string>TODO</string>
+    </value>
+  </nameValuePair>
+
+<nameValuePair>
+    <name>trained_model_name</name>
+    <value>
+        <string>TODO_eee_ddkg</string>
+    </value>
+  </nameValuePair>
+
+<nameValuePair>
+    <name>actual_class_label</name>
+    <value>
+        <string>TODO</string>
+    </value>
+  </nameValuePair>
+
+
+
     </configurationParameterSettings>
     <typeSystemDescription>
         <imports>

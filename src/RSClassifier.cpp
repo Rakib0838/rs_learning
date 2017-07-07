@@ -22,6 +22,33 @@ RSClassifier::RSClassifier()
 {
 }
 
+
+void RSClassifier::setLabels(std::string file_name, std::vector<std::string> &my_annotation)
+{
+    std::string packagePath = ros::package::getPath("rs_learning");
+     std::string savePath = packagePath + "/data/";
+
+         // To check the resource path................................................
+     if(!boost::filesystem::exists(savePath))
+        {
+         std::cout<<"folder called data is not found to read the class label from .txt file >>>"<<std::endl;
+        }
+
+
+    std::ifstream file((savePath+file_name+".txt").c_str());
+
+  std::string str;
+  std::vector<std::string> split_str;
+
+  while(std::getline(file ,str))
+   {
+     boost::split(split_str,str,boost::is_any_of(":"));
+      my_annotation.push_back(split_str[0]);
+
+    }
+
+}
+
 // To read the class names and represent them as float numbers, which is needed to declare the
 // class labels..........................................................
 
@@ -199,7 +226,8 @@ void  RSClassifier::processPclFeature(std::string memory_name, std::vector<rs::C
 
 */
 
-void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::Cluster> clusters, RSClassifier *obj_VFH, cv::Mat &color,std::vector<std::string> models_label, uima::CAS &tcas)
+void  RSClassifier::processVFHFeature(std::string memory_name,std::string set_mode, std::string dataset_use,std::string feature_use,
+                                      std::vector<rs::Cluster> clusters, RSClassifier *obj_VFH, cv::Mat &color,std::vector<std::string> models_label, uima::CAS &tcas)
 {
 
 
@@ -237,7 +265,7 @@ void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::C
 
  //To annotate the clusters..................
 
-       RsAnnotation (tcas,classLabelInString, cluster);
+       RsAnnotation (tcas,classLabelInString,feature_use, dataset_use, cluster,set_mode);
 
       //set roi on image
       rs::ImageROI image_roi = cluster.rois.get();
@@ -258,7 +286,7 @@ void  RSClassifier::processVFHFeature(std::string memory_name, std::vector<rs::C
 
 
 //the function process and classify RGB images, which run from a .bag file.
-void  RSClassifier::processCaffeFeature(std::string memory_name,
+void  RSClassifier::processCaffeFeature(std::string memory_name, std::string set_mode, std::string dataset_use,std::string feature_use,
                                       std::vector<rs::Cluster> clusters,
                                       RSClassifier *obj_caffe, cv::Mat &color, std::vector<std::string> models_label, uima::CAS &tcas)
 {
@@ -302,7 +330,7 @@ void  RSClassifier::processCaffeFeature(std::string memory_name,
 
      //To annotate the clusters..................
 
-           RsAnnotation (tcas,classLabelInString, cluster);
+           RsAnnotation (tcas,classLabelInString,feature_use, dataset_use, cluster,set_mode);
 
 
           //set roi on image
@@ -322,28 +350,6 @@ void  RSClassifier::processCaffeFeature(std::string memory_name,
 
 }
 
-
-void RSClassifier::setLabels(std::string file_name, std::vector<std::string> &my_annotation)
-{
-    std::string packagePath = ros::package::getPath("rs_learning");
-     std::string savePath = packagePath + "/data/";
-
-         // To check the resource path................................................
-     if(!boost::filesystem::exists(savePath))
-        {
-         std::cout<<"folder called data is not found to save the <<< classLabel in Double data >>>"<<std::endl;
-        }
-
-
-    std::ifstream file((savePath+file_name+".txt").c_str());
-
-  std::string str;
- while(std::getline(file ,str))
- {
-     my_annotation.push_back(str);
- }
-
-}
 
 RSClassifier::~ RSClassifier()
 {

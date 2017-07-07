@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taeDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.cpp</frameworkImplementation>
+  <primitive>true</primitive>
+  <annotatorImplementationName>rs_classifyOfflineAnnotator</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>classifyOfflineAnnotator</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters>
+
+  <!-- classifier type should be rssvm, rsrf, rsgbt, rsknn  -->
+              <configurationParameter>
+                  <name>classifier_type</name>
+                  <type>string</type>
+                  <multiValued>false</multiValued>
+                  <mandatory>false</mandatory>
+              </configurationParameter>
+
+<configurationParameter>
+    <name>trained_model_name</name>
+    <type>string</type>
+    <multiValued>false</multiValued>
+    <mandatory>false</mandatory>
+</configurationParameter>
+
+
+        <configurationParameter>
+            <name>test_data_name</name>
+            <type>string</type>
+            <multiValued>false</multiValued>
+            <mandatory>false</mandatory>
+        </configurationParameter>
+
+    <configurationParameter>
+      <name>test_label_name</name>
+        <type>string</type>
+       <multiValued>false</multiValued>
+      <mandatory>false</mandatory>
+    </configurationParameter>
+
+<configurationParameter>
+  <name>actual_class_label</name>
+    <type>string</type>
+   <multiValued>false</multiValued>
+  <mandatory>false</mandatory>
+</configurationParameter>
+
+<!-- Have to be given when work with rsknn -->
+<configurationParameter>
+    <name>trainData_matrix</name>
+    <type>string</type>
+    <multiValued>false</multiValued>
+    <mandatory>false</mandatory>
+</configurationParameter>
+
+<configurationParameter>
+    <name>trainLabel_matrix</name>
+    <type>string</type>
+    <multiValued>false</multiValued>
+    <mandatory>false</mandatory>
+</configurationParameter>
+
+
+    </configurationParameters>
+
+<configurationParameterSettings>
+
+
+<!-- classifier_type should be rssvm, rsrf, rsgbt, rsknn  -->
+<nameValuePair>
+ <name>classifier_type</name>
+ <value>
+     <string>rsgbt</string>
+ </value>
+</nameValuePair>
+
+
+<!-- train_data_name and train_label_name can be found in rs_learning/data folder  -->
+<nameValuePair>
+ <name>trained_model_name</name>
+ <value>
+     <string>IAI_CNN_INS_rsgbtModel_obj</string>
+ </value>
+</nameValuePair>
+
+<nameValuePair>
+ <name>test_data_name</name>
+ <value>
+     <string>IAI_CNN_INS_MatTest_obj_10_our</string>
+ </value>
+</nameValuePair>
+
+<nameValuePair>
+ <name>test_label_name</name>
+ <value>
+     <string>IAI_CNN_INS_MatTestLabel_obj_10_our</string>
+ </value>
+</nameValuePair>
+
+<nameValuePair>
+ <name>actual_class_label</name>
+ <value>
+     <string>IAI_CNN_INS_ClassLabel_obj_10_our</string>
+ </value>
+</nameValuePair>
+
+<nameValuePair>
+ <name>trainData_matrix</name>
+ <value>
+     <string>IAI_CNN_INS_MatTrain_obj_10_our</string>
+ </value>
+</nameValuePair>
+
+<nameValuePair>
+ <name>trainLabel_matrix</name>
+ <value>
+     <string>IAI_CNN_INS_MatTrainLabel_obj_10_our</string>
+ </value>
+</nameValuePair>
+
+
+</configurationParameterSettings>
+
+<typeSystemDescription>
+        <imports>
+            <import location="../typesystem/all_types.xml"/>
+        </imports>
+    </typeSystemDescription>
+    <capabilities>
+        <capability>
+            <inputs/>
+            <outputs/>
+            <languagesSupported>
+                <language>x-unspecified</language>
+            </languagesSupported>
+        </capability>
+    </capabilities>
+    <operationalProperties>
+        <modifiesCas>true</modifiesCas>
+        <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+        <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+</taeDescription>

@@ -107,7 +107,7 @@ void RSRF::classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_
 {
 
   // To load the test data and it's label.............................
-  
+
   std::cout << "size of test matrix :" << test_mat.size() << std::endl;
 
 
@@ -124,13 +124,33 @@ void RSRF::classifyOnLiveData(std::string trained_file_name_saved, cv::Mat test_
 
 }
 
-void RSRF::RsAnnotation (uima::CAS &tcas,std::string class_name, rs::Cluster &cluster)
+void RSRF::RsAnnotation(uima::CAS &tcas, std::string class_name, std::string feature_name, std::string database_name, rs::Cluster &cluster, std::string set_mode)
 {
-    //To annotate the clusters..................
-         rs::Classification classResult= rs::create<rs::Classification>(tcas);
-         classResult.classname.set(class_name);
-         classResult.source("Random Forest");
-         cluster.annotations.append(classResult);
+  rs::Classification classResult = rs::create<rs::Classification>(tcas);
+  classResult.classname.set(class_name);
+  classResult.classifier("Random Forest");
+  classResult.featurename(feature_name);
+  classResult.model(database_name);
+
+  if(set_mode == "CL")
+  {
+//To annotate the clusters..................
+  cluster.annotations.append(classResult);
+     }
+
+  else if(set_mode == "GT")
+  {
+      rs::GroundTruth setGT = rs::create<rs::GroundTruth>(tcas);
+       setGT.classificationGT.set(classResult);
+       cluster.annotations.append(setGT);
+  }
+
+
+  else {
+       outInfo("You should set the parameter (set_mode) as CL or GT");
+     }
+
+
 }
 
 RSRF::~ RSRF()

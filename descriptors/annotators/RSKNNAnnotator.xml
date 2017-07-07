@@ -2,14 +2,15 @@
 <taeDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.cpp</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>rs_rSSvmAnnotator</annotatorImplementationName>
+  <annotatorImplementationName>rs_rSKNNAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>RSSvmAnnotator</name>
+    <name>RSKNNAnnotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
+    <configurationParameters>
 
-<configurationParameters>
+
 
 <!--which should be CL (classify) or GT (groundTruth)  -->
 <configurationParameter>
@@ -19,8 +20,16 @@
     <mandatory>false</mandatory>
 </configurationParameter>
 
+<!-- Have to be given when work with rsknn -->
 <configurationParameter>
-    <name>trained_model_name</name>
+    <name>trainKNN_matrix</name>
+    <type>string</type>
+    <multiValued>false</multiValued>
+    <mandatory>false</mandatory>
+</configurationParameter>
+
+<configurationParameter>
+    <name>trainKNNLabel_matrix</name>
     <type>string</type>
     <multiValued>false</multiValued>
     <mandatory>false</mandatory>
@@ -33,38 +42,44 @@
     <mandatory>false</mandatory>
 </configurationParameter>
 
-</configurationParameters>
 
-
-<configurationParameterSettings>
+    </configurationParameters>
+    <configurationParameterSettings>
 
 <!--which should be CL (classify) or GT (groundTruth)  -->
 <nameValuePair>
     <name>set_mode</name>
     <value>
-        <string>TODO</string>
+        <string>CL</string>
     </value>
   </nameValuePair>
 
+
 <nameValuePair>
-    <name>trained_model_name</name>
-    <value>
-        <string>TO_eee_ddkg</string>
-    </value>
-  </nameValuePair>
+ <name>trainKNN_matrix</name>
+ <value>
+     <string>IAI_CNN_INS_MatTrain_obj_10_our</string>
+ </value>
+</nameValuePair>
+
+<nameValuePair>
+ <name>trainKNNLabel_matrix</name>
+ <value>
+     <string>IAI_CNN_INS_MatTrainLabel_obj_10_our</string>
+ </value>
+</nameValuePair>
 
 <nameValuePair>
     <name>actual_class_label</name>
     <value>
-        <string>TODO</string>
+        <string>IAI_CNN_INS_ClassLabel_obj_10_our</string>
     </value>
   </nameValuePair>
 
 
-</configurationParameterSettings>
+    </configurationParameterSettings>
 
-
-  <typeSystemDescription>
+    <typeSystemDescription>
         <imports>
             <import location="../typesystem/all_types.xml"/>
         </imports>
