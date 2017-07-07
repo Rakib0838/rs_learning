@@ -1,15 +1,15 @@
 # rs_learning
-rs_learning is a Robosherlock package as well as ROS package.
+   rs_learning is a Robosherlock package as well as ROS package.
 
-# Prerequisite: Robosherlock, caffe, PCL, openCV
+  # Prerequisite: Robosherlock, caffe, PCL, openCV
 
-# The rs_learning package consists of three modules. 
+  # The rs_learning package consists of three modules. 
    1. Module for extracting features.
    2. Module for creating trainedModel
       for different classifiers.
    3. Module for classifying images.
-# Extracting feature module:
-# Usage:
+  # Extracting feature module:
+  # Usage:
        ### To get the help
           rosrun rs_learning -h
        
@@ -74,10 +74,10 @@ rs_learning is a Robosherlock package as well as ROS package.
       In Robosherlock each annotator has one .xml file in Descriptors/annotators folder. 
       And the ensemble of annotators is called analysis engine.
    
-# TrainedModel creator module:
+  # TrainedModel creator module:
     If someone wants to create the TrainedModel of data for specific classifer,
     should first provide the following parameter's value in trainerAnnotator.xml
-    file. It shoulde be genarated a TrainedModel file as database_name_feat_split_MatTrainfile.yaml
+    file. It will genarate a TrainedModel file as database_name_feat_split_MatTrainfile.yaml
     in rs_learning/data/trainedData folder. 
                      
                       1. classifier_type: It should be rssvm (for support vector mechine) or
@@ -90,7 +90,7 @@ rs_learning is a Robosherlock package as well as ROS package.
                       3. train_label_name: The name of the data trainLabel file 
                          (database_name_feat_split_MatTrainLabelfile) in folder rs_learning/data 
                 
-     ## Example: If someone choose parameters classifier_type as rssvm, train_data_name
+      ## Example: If someone choose parameters classifier_type as rssvm, train_data_name
                             as IAI_CNN_INS_MatTrainObjectOur and train_label_name name as 
                             IAI_CNN_INS_MatTrainLabelObjectOur in trainerAnnotator.xml file and type the
                             following command on terminal.
@@ -101,7 +101,7 @@ rs_learning is a Robosherlock package as well as ROS package.
                in rs_learning/data/trainedData folder. 
                         
 #########################################################################                       
-  # Classify Image Module: 
+   # Classify Image Module: 
   It is divided into two parts classify offline and online. 
   If someone has test data on hand, he can use classify_offline 
   annotator and classifies the images. The command for that:
