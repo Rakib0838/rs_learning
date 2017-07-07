@@ -1,8 +1,7 @@
 # rs_learning
+rs_learning is a Robosherlock package as well as ROS package.
 
-#rs_learning is a Robosherlock package as well as ROS package.
-
-## Prerequisite: Robosherlock, caffe, PCL, openCV
+# Prerequisite: Robosherlock, caffe, PCL, openCV
 
 # The rs_learning package consists of three modules. 
    1. Module for extracting features.
@@ -71,11 +70,10 @@
                       
                           5. IAI_CNN_INS_MatTestLabelObjectOur.yaml
 
-//########################################################################################################
       In Robosherlock each annotator has one .xml file in Descriptors/annotators folder. 
       And the ensemble of annotators is called analysis engine.
    
-TrainedModel creator: If someone wants to create the TrainedModel of data for specific classifer,
+#TrainedModel creator: If someone wants to create the TrainedModel of data for specific classifer,
                       should first provide the following parameter's value in trainerAnnotator.xml
                        file. It shoulde be genarated a TrainedModel file as database_name_feat_split_MatTrainfile.yaml
                         in rs_learning/data/trainedData folder. 
