@@ -340,7 +340,7 @@ void extractCaffeFeature(std::string featType, const  std::map<double, std::vect
   std::string featDescription;
 
    if(featType=="VGG16")
-   { CAFFE_MODEL_FILE = "/caffe/models/bvlc_reference_caffenet/VGG_ILSVRC_16_layers.prototxt";
+   { CAFFE_MODEL_FILE = "/caffe/models/bvlc_reference_caffenet/VGG_ILSVRC_16_layers_deploy.prototxt";
        CAFFE_TRAINED_FILE= "/caffe/models/bvlc_reference_caffenet/VGG_ILSVRC_16_layers.caffemodel";
 
        featDescription="VGG16 feature size :";
