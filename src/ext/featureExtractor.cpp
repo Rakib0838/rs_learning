@@ -35,32 +35,6 @@ using namespace std;
 
 namespace po = boost::program_options;
 
-/*
-
-void setLabels(std::string file_name, int line_num, std::vector<string> &my_annotation)
-{
-    std::string packagePath = ros::package::getPath("rs_learning");
-     std::string savePath = packagePath + "/data/";
-
-         // To check the resource path................................................
-     if(!boost::filesystem::exists(savePath))
-        {
-         std::cout<<"folder called data is not found to save the <<< classLabel in Double data >>>"<<std::endl;
-        }
-
-
-    std::ifstream file((savePath+file_name+".txt").c_str());
-
-  std::string str;
- while(std::getline(file ,str))
- {
-     my_annotation.push_back(str);
- }
-
-}
-
-*/
-
 
 //To read the object label from rs_resource/object_datasets folder
 void readClassLabelIAI( std::string obj_file_path, std::vector <std::pair < string, double> > &objectToLabel,
@@ -92,8 +66,9 @@ void readClassLabelIAI( std::string obj_file_path, std::vector <std::pair < stri
 
         if(!subclasses.empty())
           for(auto sc : subclasses)
-          {
-              objectToLabel.push_back(std::pair< std::string,float >(sc , clslabel ));
+          {                       
+
+                    objectToLabel.push_back(std::pair< std::string,float >(sc , clslabel ));
           }
         else
         {
@@ -106,12 +81,29 @@ void readClassLabelIAI( std::string obj_file_path, std::vector <std::pair < stri
 
     fs.release();
 
-         std::cout<<"objects and it's class labels:"<<std::endl;
-      for(int i=0; i<objectToLabel.size(); i++){
-          std::cout<< objectToLabel[i].first <<"::"<<objectToLabel[i].second<< std::endl;
-      }
+
+    if(!objectToClassLabelMap.empty()) {
+   std::cout<<"objectToClassLabelMap:"<<std::endl;
+
+   for(int i=0; i<objectToClassLabelMap.size(); i++){
+       std::cout<< objectToClassLabelMap[i].first <<"::"<<objectToClassLabelMap[i].second<< std::endl;
+         }
+
+    }
+
+
+    if(!objectToLabel.empty()) {
+     std::cout<<"objectToLabel:"<<std::endl;
+  for(int i=0; i<objectToLabel.size(); i++){
+      std::cout<< objectToLabel[i].first <<"::"<<objectToLabel[i].second<< std::endl;
+          }
+
+    }
+
+
 
 }
+
 
 //To read the object label from rs_resource/object_datasets folder
 //To read the .yml for Washington Uni........................................
@@ -119,6 +111,16 @@ void readClassLabelWU( std::string obj_file_path, std::vector <std::pair < strin
            std::vector <std::pair < string, double> > &objectToLabelTest, std::vector <std::pair < string, double> > &objectToClassLabelMap)
 
 {
+    std::vector<std::string> subclasses;
+     std::vector<std::string> subsubclasses;
+
+
+     std::vector <std::pair < string, double> > objToLabTestSubcls;
+     std::vector <std::pair < string, double> > objToLabTrainSubcls;
+
+     std::vector <std::pair < string, double> > objToLabTestSubSubcls;
+     std::vector <std::pair < string, double> > objToLabTrainSubSubcls;
+
     cv::FileStorage fs;
     fs.open(obj_file_path, cv::FileStorage::READ);
     std::vector<std::string> classes;
@@ -130,38 +132,73 @@ void readClassLabelWU( std::string obj_file_path, std::vector <std::pair < strin
       std::cout << "Object file has no classes defined" << std::endl;
 
     }
-    else
+
+      else
+
+
     {
-      for(int i=0; i<classes.size();i++)
+      for(auto c : classes)
 
-      {
-          double clslabel = clslabel+1;
+      {   double clslabel = clslabel+1;
 
-          objectToClassLabelMap.push_back(std::pair< std::string,float >(classes[i], clslabel ));
+         //  std::vector<std::string> subclasses;
+            fs[c] >> subclasses;
+
+            //To set the map between string and double classlabel
+            objectToClassLabelMap.push_back(std::pair< std::string,float >(c , clslabel ));
+
+          if(!subclasses.empty())
+               {
 
 
-          std::vector<std::string> subclasses;
-           fs[classes[i]] >> subclasses;
+              for(int j=0; j<subclasses.size(); j++)
 
-        if(!subclasses.empty())
+                     {
 
-          for(int j=0; j<subclasses.size(); j++)
+                        if(j==0)
+                          {
+                               objToLabTestSubcls.push_back(std::pair< std::string,float >(c+'/'+subclasses[j] , clslabel ));
+                           }
 
-          {
+                               else
+                                  {
+                                    objToLabTrainSubcls.push_back(std::pair< std::string,float >(c+'/'+subclasses[j] , clslabel ));
+                                   }
+                     }
 
-              if(j==0)
-              {
-                  objectToLabelTest.push_back(std::pair< std::string,float >(classes[i]+'/'+subclasses[j] , clslabel ));
-              }
 
-          else
-              {
-              objectToLabelTrain.push_back(std::pair< std::string,float >(classes[i]+'/'+subclasses[j] , clslabel ));
-                }
-      }
+              for(auto sc : subclasses)
+                 {
+
+                     fs[sc] >> subsubclasses;
+
+                      if(!subsubclasses.empty())
+                       {
+                           for(int k=0; k<subsubclasses.size(); k++)
+                               {
+
+                                   if(k==0)
+                                    {
+                                       objToLabTestSubSubcls.push_back(std::pair< std::string,float >(sc+'/'+subsubclasses[k] , clslabel ));
+                                     }
+
+                                        else
+                                        {
+                                          objToLabTrainSubSubcls.push_back(std::pair< std::string,float >(sc+'/'+subsubclasses[k] , clslabel ));
+                                          }
+                                }
+
+
+                        }
+
+
+                 }
+
+       }
 
       }
     }
+
 
     fs.release();
 
@@ -173,6 +210,50 @@ void readClassLabelWU( std::string obj_file_path, std::vector <std::pair < strin
           }
 
      }
+
+
+
+
+
+
+     if(!subsubclasses.empty() && !subclasses.empty())
+     {
+
+           for(int i=0; i<objToLabTestSubSubcls.size(); i++)
+           {
+
+             objectToLabelTest.push_back(std::pair< std::string,float >(objToLabTestSubSubcls[i].first , objToLabTestSubSubcls[i].second));
+
+              }
+
+           for(int i=0; i<objToLabTrainSubSubcls.size(); i++)
+           {
+
+             objectToLabelTrain.push_back(std::pair< std::string,float >(objToLabTrainSubSubcls[i].first , objToLabTrainSubSubcls[i].second));
+
+              }
+
+     }
+
+     else {
+
+         for(int i=0; i<objToLabTestSubcls.size(); i++)
+         {
+
+           objectToLabelTest.push_back(std::pair< std::string,float >(objToLabTestSubcls[i].first , objToLabTestSubcls[i].second));
+
+            }
+
+         for(int i=0; i<objToLabTrainSubcls.size(); i++)
+         {
+
+           objectToLabelTrain.push_back(std::pair< std::string,float >(objToLabTrainSubcls[i].first , objToLabTrainSubcls[i].second));
+
+
+
+           }
+     }
+
 
 
      if(!objectToLabelTest.empty()) {
@@ -592,7 +673,7 @@ int main(int argc, char **argv)
     std::string objects_name,storage, feat, split,database_name;
     desc.add_options()
     ("help,h", "Print help messages")
-    ("file,f", po::value<std::string>(& objects_name)->default_value("our3shape"),
+    ("file,f", po::value<std::string>(& objects_name)->default_value("obj_10_our"),
      "enter the object file name")
     ("storage,s", po::value<std::string>(& storage)->default_value("partial_views"),
     "enter storage folder name")
@@ -600,7 +681,7 @@ int main(int argc, char **argv)
             "choose the database: [IAI|WU]")
     ("split,o", po::value<std::string>(&split)->default_value("INS"),
     "choose way to split. If database is IAI choose ALL or INS: [ALL|INS|ONE]")
-    ("feature,r", po::value<std::string>(&feat)->default_value("VGG16"),
+    ("feature,r", po::value<std::string>(&feat)->default_value("VFH"),
      "choose feature to extract: [CNN|VGG16|VFH|CVFH]");
 
     po::variables_map vm;
