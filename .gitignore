@@ -1,5 +1,5 @@
 *.md~
-*.txt.user
+*.user
 *.cpp~
 *.xml~
 *.h~
