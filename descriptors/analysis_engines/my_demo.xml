@@ -270,7 +270,7 @@
  <!--  <node>RSRFAnnotator</node>  -->
  <!--  <node>RSSvmAnnotator1</node>  -->
    <node>RSSvmAnnotator</node>
-    <node>RSGBAnnotator</node>
+   <node>RSGBAnnotator</node>
     <node>RSKNNAnnotator</node>
 
  <!--  <node>StorageWriter</node>  -->

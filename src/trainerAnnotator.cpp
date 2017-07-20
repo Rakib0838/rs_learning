@@ -26,13 +26,13 @@ private:
   // classifier type should be rssvm, rsrf, rsgbt, rsknn........
   std::string classifier_type;
 
-  //the name of train matrix file in folder rs_learning/data
+  //the name of train matrix file in folder /rs_resources/objects_dataset/extractedFeat
   std::string train_data_name;
 
-   //the name of train label matrix file in folder rs_learning/data
+   //the name of train label matrix file in folder /rs_resources/objects_dataset/extractedFeat
   std::string train_label_name;
 
-  // the name of trained model file, which will be generated in folder rs_learning/data/TrainedData
+  // the name of trained model file, which will be generated in folder rs_learning/data
   std::string trained_model_name;
 
 public:
@@ -56,8 +56,8 @@ public:
         std::vector<std::string> split;
         boost::split(split, train_data_name, boost::is_any_of("_"));
 
-      trained_model_name= split[0]+'_'+split[1]+'_'+split[2]+'_'+classifier_type+"Model"+'_'+split[4];
-      outInfo("trained_model_name:"<<trained_model_name<<std::endl);
+      trained_model_name= split[0]+'_'+split[1]+'_'+classifier_type+"Model"+'_'+split[3];
+      outInfo("trained_model_name:"<<trained_model_name<< "  will be generated in rs_learning/trainedData");
 
      if(classifier_type=="rssvm"){
           RSClassifier* svmObject= new RSSVM;

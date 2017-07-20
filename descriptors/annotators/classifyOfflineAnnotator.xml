@@ -72,39 +72,42 @@
 <nameValuePair>
  <name>classifier_type</name>
  <value>
-     <string>rsgbt</string>
+     <string>rssvm</string>
  </value>
 </nameValuePair>
 
 
-<!-- train_data_name and train_label_name can be found in rs_learning/data folder  -->
+<!-- train_model_name can be found in rs_learning/trainedData  -->
 <nameValuePair>
  <name>trained_model_name</name>
  <value>
-     <string>IAI_CNN_INS_rsgbtModel_obj</string>
+     <string>WU_CNN_rssvmModel_object2</string>
  </value>
 </nameValuePair>
 
+<!-- test_data_name and test_label_name and actual_class_label can be found in rs_resources/objects_dataset/extractedFeat/ folder  -->
 <nameValuePair>
  <name>test_data_name</name>
  <value>
-     <string>IAI_CNN_INS_MatTest_obj_10_our</string>
+     <string>WU_CNN_MatTest_object2</string>
  </value>
 </nameValuePair>
 
 <nameValuePair>
  <name>test_label_name</name>
  <value>
-     <string>IAI_CNN_INS_MatTestLabel_obj_10_our</string>
+     <string>WU_CNN_MatTestLabel_object2</string>
  </value>
 </nameValuePair>
 
 <nameValuePair>
  <name>actual_class_label</name>
  <value>
-     <string>IAI_CNN_INS_ClassLabel_obj_10_our</string>
+     <string>WU_CNN_ClassLabel_object2</string>
  </value>
 </nameValuePair>
+
+<!-- if classifier is rsknn instead of trained_model_name provide the following two parameters  -->
 
 <nameValuePair>
  <name>trainData_matrix</name>

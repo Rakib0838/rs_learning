@@ -156,6 +156,30 @@ public:
                knnObject->processCaffeFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color, model_labels, tcas);
 
            }
+
+           else if(dataset_use=="BOTH" &&  feature_use=="VFH")
+           {
+                std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+                knnObject->processVFHFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color,model_labels, tcas);
+           }
+           else if(dataset_use=="BOTH" &&  feature_use=="CVFH")
+           {
+                std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+                knnObject->processVFHFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color,model_labels, tcas);
+           }
+           else if(dataset_use=="BOTH" &&  feature_use=="CNN")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               knnObject->processCaffeFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color, model_labels, tcas);
+
+           }
+           else if(dataset_use=="BOTH" &&  feature_use=="VGG16")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               knnObject->processCaffeFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color, model_labels, tcas);
+
+           }
+
             else{ outInfo("Please sellect the correct value of parameter(feature_use):VFH,CVFH,CNN,VGG16"<<std::endl);}
 
        }
@@ -210,6 +234,31 @@ public:
                knnObject->processCaffeFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color, model_labels, tcas);
 
            }
+
+           else if(dataset_use =="BOTH" &&  feature_use=="VFH")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               knnObject->processVFHFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color,model_labels, tcas);
+           }
+           else if(dataset_use =="BOTH" &&  feature_use=="CVFH")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               knnObject->processVFHFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color,model_labels, tcas);
+           }
+           else if(dataset_use =="BOTH" &&  feature_use=="CNN")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               knnObject->processCaffeFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color, model_labels, tcas);
+
+           }
+           else if(dataset_use =="BOTH" &&  feature_use=="VGG16")
+           {
+
+                std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               knnObject->processCaffeFeatureKNN(trainKNN_matrix,trainKNNLabel_matrix,set_mode,dataset_use,feature_use,clusters, knnObject, color, model_labels, tcas);
+
+           }
+
            else{ outInfo("Please sellect the correct value of parameter(feature_use):VFH,CVFH,CNN,VGG16"<<std::endl);}
 
 

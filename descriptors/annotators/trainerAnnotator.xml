@@ -41,7 +41,7 @@
 <nameValuePair>
    <name>classifier_type</name>
    <value>
-       <string>rsgbt</string>
+       <string>rssvm</string>
    </value>
 </nameValuePair>
 
@@ -49,14 +49,14 @@
 <nameValuePair>
    <name>train_data_name</name>
    <value>
-       <string>IAI_CNN_INS_MatTrain_obj_10_our</string>
+       <string>WU_CNN_MatTrain_object2</string>
    </value>
 </nameValuePair>
 
 <nameValuePair>
    <name>train_label_name</name>
    <value>
-       <string>IAI_CNN_INS_MatTrainLabel_obj_10_our</string>
+       <string>WU_CNN_MatTrainLabel_object2</string>
    </value>
 </nameValuePair>
 

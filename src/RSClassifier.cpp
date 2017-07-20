@@ -66,27 +66,29 @@ void RSClassifier::getLabels(const std::string path,  std::map<std::string, doub
 }
 
 
-// To read the descriptors matrix and it's label from rs_learning/data folder...........
+// To read the descriptors matrix and it's label from /rs_resources/objects_dataset/extractedFeat folder...........
 
 void RSClassifier::readDescriptorAndLabel(std::string matrix_name, std::string label_name,
     cv::Mat &des_matrix, cv::Mat &des_label)
 {
 
   cv::FileStorage fs;
-  std::string packagePath = ros::package::getPath("rs_learning") + '/';
-  std::string savePath = "data/";
+  std::string packagePath = ros::package::getPath("rs_resources") + '/';
+  std::string savePath = "objects_dataset/extractedFeat/";
 
-  if(!boost::filesystem::exists(packagePath + savePath))
+  if(!boost::filesystem::exists(packagePath + savePath+ matrix_name+".yaml")||
+      !boost::filesystem::exists(packagePath + savePath+ label_name+".yaml"))
   {
-    std::cout << "Train data can be not found" << std::endl;
+    outError( matrix_name <<" or "<<label_name <<" in path  ( " << packagePath + savePath << " ) does not exist. please check" << std::endl);
 
   }
-
+   else {
   fs.open(packagePath + savePath + matrix_name + ".yaml", cv::FileStorage::READ);
   fs[matrix_name] >> des_matrix;
 
   fs.open(packagePath + savePath + label_name + ".yaml", cv::FileStorage::READ);
   fs [label_name] >> des_label;
+  }
 
 }
 
@@ -98,13 +100,13 @@ void RSClassifier::evaluation(std::vector<int> test_label, std::vector<int> pred
   std::map < std::string, double > object_label;
 
   std::string resourcePath;
-  std::string lebel_path = "data/" + obj_classInDouble + ".txt";
+  resourcePath = ros::package::getPath("rs_resources") + '/';
+  std::string lebel_path = "objects_dataset/extractedFeat/" + obj_classInDouble + ".txt";
 
-  resourcePath = ros::package::getPath("rs_learning") + '/';
 
   if(!boost::filesystem::exists(resourcePath + lebel_path))
   {
-    std::cout << "objects.txt file is not found" << std::endl;
+    outError(obj_classInDouble <<" file is not found in /rs_resources/objects_dataset/extractedFeat/ " << std::endl);
 
   };
 
@@ -145,20 +147,26 @@ void RSClassifier::evaluation(std::vector<int> test_label, std::vector<int> pred
 }
 
 
-//To save or load the classifier's trained data in rs_learning/data/trainedData....
+//To save or load the classifier's trained data in rs_learning/trainedData....
 
 std::string RSClassifier::saveOrLoadTrained(std::string trained_file_name)
 {
   std::string packagePath;
-  std::string save_train = "data/trainedData/";
+  std::string save_train = "trainedData/";
+  std::string a;
 
   packagePath = ros::package::getPath("rs_learning") + '/';
 
+
   if(!boost::filesystem::exists(packagePath + save_train))
   {
-    std::cout << "Trained data can not recognize" << std::endl;
+      outError("Folder called (trainedData) is not found to save or load the generated trained model. "
+               " Please create the folder in rs_learning/ and name it as trainedData, then run the annotator again "<<std::endl);
   }
-  std::string a = packagePath + save_train + trained_file_name + ".xml";
+  else{
+          a = packagePath + save_train + trained_file_name + ".xml";
+
+   }
 
   return a;
 }

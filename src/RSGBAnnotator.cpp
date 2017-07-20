@@ -154,6 +154,30 @@ public:
                gbtObject->processCaffeFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color, model_labels, tcas);
 
            }
+
+
+           else if(dataset_use=="BOTH" &&  feature_use=="VFH")
+           {
+                 std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+                gbtObject->processVFHFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color,model_labels, tcas);
+           }
+           else if(dataset_use=="BOTH" &&  feature_use=="CVFH")
+           {
+                 std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+                gbtObject->processVFHFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color,model_labels, tcas);
+           }
+           else if(dataset_use=="BOTH" &&  feature_use=="CNN")
+           {
+                 std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+                gbtObject->processCaffeFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color, model_labels, tcas);
+
+           }
+           else if(dataset_use=="BOTH" &&  feature_use=="VGG16")
+           {
+                std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               gbtObject->processCaffeFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color, model_labels, tcas);
+
+           }
             else{ outInfo("Please sellect the correct value of parameter(feature_use):VFH,CVFH,CNN,VGG16"<<std::endl);}
 
        }
@@ -207,6 +231,30 @@ public:
                gbtObject->processCaffeFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color, model_labels, tcas);
 
            }
+
+           else if(dataset_use =="BOTH" &&  feature_use=="VFH")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               gbtObject->processVFHFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color,model_labels, tcas);
+           }
+           else if(dataset_use =="BOTH" &&  feature_use=="CVFH")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               gbtObject->processVFHFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color,model_labels, tcas);
+           }
+           else if(dataset_use =="BOTH" &&  feature_use=="CNN")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               gbtObject->processCaffeFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color, model_labels, tcas);
+
+           }
+           else if(dataset_use =="BOTH" &&  feature_use=="VGG16")
+           {
+               std::cout<<"Calculation starts with :" <<set_mode<<"::"<<dataset_use <<"::"<<feature_use<<std::endl;
+               gbtObject->processCaffeFeature(trained_model_name,set_mode,dataset_use,feature_use,clusters, gbtObject, color, model_labels, tcas);
+
+           }
+
            else{ outInfo("Please sellect the correct value of parameter(feature_use):VFH,CVFH,CNN,VGG16"<<std::endl);}
 
 

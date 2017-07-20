@@ -174,7 +174,9 @@ void RSGBT:: trainModel(std::string train_matrix_name, std::string train_label_n
   std::cout << "size of train matrix:" << train_matrix.size() << std::endl;
   std::cout << "size of train label:" << train_label.size() << std::endl;
 
+  std::string pathToSaveModel= saveOrLoadTrained(trained_file_name);
 
+  if(!pathToSaveModel.empty()){
   //random forest algorithm ............................
 
   cv::Mat var_type = cv::Mat(train_matrix.cols + 1, 1, CV_8U);
@@ -203,6 +205,9 @@ gbtree->train(train_matrix, CV_ROW_SAMPLE, train_label, cv::Mat(), cv::Mat(), va
 
 // To save the trained data.............................
 gbtree->save((saveOrLoadTrained(trained_file_name)).c_str());
+
+
+  }
 
 }
 

@@ -34,6 +34,9 @@ void RSRF:: trainModel(std::string train_matrix_name, std::string train_label_na
   std::cout << "size of train matrix:" << train_matrix.size() << std::endl;
   std::cout << "size of train label:" << train_label.size() << std::endl;
 
+  std::string pathToSaveModel= saveOrLoadTrained(trained_file_name);
+
+  if(!pathToSaveModel.empty()){
 
   //random forest algorithm ............................
 
@@ -62,6 +65,10 @@ void RSRF:: trainModel(std::string train_matrix_name, std::string train_label_na
 
   // To save the trained data.............................
   rtree->save((saveOrLoadTrained(trained_file_name)).c_str());
+
+ }
+
+
 }
 
 
