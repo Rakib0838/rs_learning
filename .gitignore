@@ -1,5 +1,6 @@
-.md~
-.txt.user
-.cpp~
-.xml~
-.h~
+*.md~
+*.txt.user
+*.cpp~
+*.xml~
+*.h~
+*.gitignore~
