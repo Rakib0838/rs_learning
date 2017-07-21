@@ -622,10 +622,10 @@ int main(int argc, char **argv)
     desc.add_options()
     ("help,h", "Print help messages")
     ("split file name,s", po::value<std::string>(& split_name)->default_value("object2"),
-     "enter the object file name")
+     "enter the split file name")
     ("storageInput,i", po::value<std::string>(& storageInput)->default_value("png_wu"),
-    "enter storage folder of IAI dataset")
-    ("Enter datasets use,d", po::value<std::string>(&dataset_name)->default_value("WU"),
+    "enter input storage folder name")
+    ("Enter name of the dataset to use,d", po::value<std::string>(&dataset_name)->default_value("WU"),
             "choose the database: [IAI|WU|BOTH]")
     ("feature,f", po::value<std::string>(&feat)->default_value("CNN"),
      "choose feature to extract: [CNN|VGG16|VFH|CVFH]");
